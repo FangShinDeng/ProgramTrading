@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import time
 import numpy as np
-yourPath = r'C:/Users/User/Desktop/程式交易系統架構/台股歷史資料(日線)/'
+yourPath = r'C:/Users/User/Desktop/DataSource/台股歷史資料(日線)/整理後/'
 
 # 列出指定路徑底下所有副檔名為csv的檔案(包含資料夾)
 def ListAllFile(path, extension):
@@ -15,6 +15,7 @@ def ListAllFile(path, extension):
                 extensionFileList.append(item)
         except:
             continue
+    print(extensionFileList)
     return extensionFileList
 
 # 清除欄位，修改日期格式
@@ -24,13 +25,23 @@ def DataClear(FileList):
         df = pd.read_csv(yourPath + '{}'.format(filename), encoding='big5')
         df = df.replace([np.inf, -np.inf], np.nan)
         # 去除欄位空白問題,修改日期格式,成交量格式
-        df = df.rename(columns={' 成交量':'成交量'})
+        df = df.rename(columns={
+            ' 成交量':'Volume',
+            '日期':'Data',
+            '開盤':'Open',
+            '最高':'High',
+            '最低':'Low',
+            '收盤': 'Close',
+            '漲跌': 'Change',
+            '漲跌%': 'ChangePCT'})
         
-        df['日期'] = pd.to_datetime(df['日期'])
-        df['成交量'] = df['成交量'].astype(int)
+        df['Data'] = pd.to_datetime(df['Data'])
+        df['Volume'] = df['Volume'].astype(int)
         # 去除最後一欄unamed:22
-        df = df[['日期', '開盤', '最高', '最低', '收盤', '漲跌', '漲跌%', '成交量']]
-
+        df = df[['Data', 'Open', 'High', 'Low', 'Close', 'Change', 'ChangePCT', 'Volume']]
+        
+        # 將所有df的小數點取到第二位
+        df= df.round(2)
         # print(df.dtypes)
         # print(df)
         
