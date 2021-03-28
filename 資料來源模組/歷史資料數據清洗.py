@@ -27,7 +27,7 @@ def DataClear(FileList):
         # 去除欄位空白問題,修改日期格式,成交量格式
         df = df.rename(columns={
             ' 成交量':'Volume',
-            '日期':'Data',
+            '日期':'Date',
             '開盤':'Open',
             '最高':'High',
             '最低':'Low',
@@ -35,10 +35,10 @@ def DataClear(FileList):
             '漲跌': 'Change',
             '漲跌%': 'ChangePCT'})
         
-        df['Data'] = pd.to_datetime(df['Data'])
+        df['Date'] = pd.to_datetime(df['Date'])
         df['Volume'] = df['Volume'].astype(int)
         # 去除最後一欄unamed:22
-        df = df[['Data', 'Open', 'High', 'Low', 'Close', 'Change', 'ChangePCT', 'Volume']]
+        df = df[['Date', 'Open', 'High', 'Low', 'Close', 'Change', 'ChangePCT', 'Volume']]
         
         # 將所有df的小數點取到第二位
         df= df.round(2)
