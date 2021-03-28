@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 import time
 import numpy as np
 # 指定要查詢的路徑
-yourPath = r'C:/Users/User/Desktop/程式交易系統架構/台股歷史資料(日線)/'
+yourPath = r'C:/Users/User/Desktop/DataSource/台股歷史資料(日線)/整理後/'
 
 # 列出指定路徑底下所有副檔名為csv的檔案(包含資料夾)
 def ListAllFile(path, extension):
@@ -24,8 +24,8 @@ def ImportDataToDatabase(FileList):
         df = pd.read_csv(yourPath + filename, encoding='utf-8')
         
         df = df.replace([np.inf, -np.inf], 0)
-        df['日期'] = pd.to_datetime(df['日期'])
-        df['成交量'] = df['成交量'].astype(int)
+        df['Date'] = pd.to_datetime(df['Date'])
+        df['Volume'] = df['Volume'].astype(int)
         tableName = filename[:7]
 
         # #create_engine用來連接sql的url，engine用connect進行連線，
